@@ -10,8 +10,6 @@ window.onload = function () {
   var dataHumidity = [];
   var dataGas = [];
 
-  
-
   var ctx = document.getElementById("myChart").getContext("2d");
   var chart = new Chart(ctx, {
     type: "line",
@@ -79,14 +77,59 @@ window.onload = function () {
     return sum / array.length;
   }
 
+  function calculateMax(array) {
+    return Math.max.apply(
+      Math,
+      array.map(function (o) {
+        return o.y;
+      })
+    );
+  }
+
+  function calculateMin(array) {
+    return Math.min.apply(
+      Math,
+      array.map(function (o) {
+        return o.y;
+      })
+    );
+  }
+
+  function calculateVariance(array, average) {
+    var sum = 0;
+    for (var i = 0; i < array.length; i++) {
+      sum += Math.pow(array[i].y - average, 2);
+    }
+    return sum / array.length;
+  }
+
   conn.onmessage = function (e) {
     var now = new Date().toLocaleTimeString();
     var dataString = e.data;
     var parts = dataString.split(",");
     if (parts.length < 3) {
-      console.error("Invalid data format: " + dataString);
+      console.error("Помилка формату даних: " + dataString);
       return;
     }
+
+    var avgTemperature = calculateAverage(dataTemperature);
+    var avgHumidity = calculateAverage(dataHumidity);
+    var avgGas = calculateAverage(dataGas);
+
+    var maxTemperature = calculateMax(dataTemperature);
+    var minTemperature = calculateMin(dataTemperature);
+    var varianceTemperature = calculateVariance(
+      dataTemperature,
+      avgTemperature
+    );
+
+    var maxHumidity = calculateMax(dataHumidity);
+    var minHumidity = calculateMin(dataHumidity);
+    var varianceHumidity = calculateVariance(dataHumidity, avgHumidity);
+
+    var maxGas = calculateMax(dataGas);
+    var minGas = calculateMin(dataGas);
+    var varianceGas = calculateVariance(dataGas, avgGas);
 
     var temperature = parseFloat(parts[0].split(":")[1].trim());
     var humidity = parseFloat(parts[1].split(":")[1].trim());
@@ -96,11 +139,12 @@ window.onload = function () {
     var avgGas = calculateAverage(dataGas);
 
     if (isNaN(temperature) || isNaN(humidity) || isNaN(gas)) {
-      console.error("Invalid data values: " + dataString);
+      console.error("Помилка формату даних: " + dataString);
       return;
     }
 
     document.getElementById("sensorData").innerHTML =
+      "Останні дані | " +
       "Температура: " +
       temperature +
       " °C, Вологість: " +
@@ -114,6 +158,28 @@ window.onload = function () {
       avgHumidity.toFixed(2) +
       "%, Середній рівень газу: " +
       avgGas.toFixed(2);
+
+    document.getElementById("sensorDataStats").innerHTML =
+      "Макс. температура: " +
+      maxTemperature.toFixed(2) +
+      " °C, Мін. температура: " +
+      minTemperature.toFixed(2) +
+      " °C, Дисперсія температури: " +
+      varianceTemperature.toFixed(2) +
+      "<br>" +
+      "Макс. вологість: " +
+      maxHumidity.toFixed(2) +
+      " %, Мін. вологість: " +
+      minHumidity.toFixed(2) +
+      " %, Дисперсія вологості: " +
+      varianceHumidity.toFixed(2) +
+      "<br>" +
+      "Макс. рівень газу: " +
+      maxGas.toFixed(2) +
+      ", Мін. рівень газу: " +
+      minGas.toFixed(2) +
+      ", Дисперсія рівня газу: " +
+      varianceGas.toFixed(2);
 
     if (dataTemperature.length > 20) {
       dataTemperature.shift();
