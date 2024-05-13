@@ -12,7 +12,15 @@
     <header>ESP32 Дані сенсорів в реальному часі (DHT11, Mq-135)</header>
     <div id="sensorData">Чекаємо на дані...</div>
 
+    
+
     <div id="chartType">
+        <select id="delaySelect">
+            <option value="1000">1 секунд</option>
+            <option value="10000">10 секунд</option>
+            <option value="100000">100 секунд</option>
+          </select>
+
     <select id="temperatureChartType">
         <option value="line">Лінія</option>
         <option value="bar">Гістограма</option>

@@ -207,6 +207,11 @@ window.onload = function () {
     document.getElementById("sensorData").innerHTML =
       "Помилка підключення до сервера! Перезавантажте сторінку Win + R.";
   };
+  
+  document.getElementById("delaySelect").addEventListener("change", function (event) {
+    console.log("Interval:" + event.target.value);
+    conn.send("Interval:" + event.target.value);
+  });
 
   document
     .getElementById("temperatureChartType")

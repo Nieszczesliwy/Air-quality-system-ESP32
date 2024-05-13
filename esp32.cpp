@@ -13,6 +13,8 @@ const int mqPin = 32;
 
 WebSocketsServer webSocket = WebSocketsServer(81);
 
+unsigned long delayTime = 1000; 
+
 void setup() {
   Serial.begin(9600);
   dht.begin();
@@ -46,11 +48,16 @@ void loop() {
     webSocket.broadcastTXT(data);
   }
 
-  delay(10000); 
+  delay(delayTime); 
 }
 
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
   if (type == WStype_TEXT) {
     Serial.printf("[%u] get Text: %s\n", num, payload);
+    String text = String((char*)payload);
+    if (text.startsWith("Interval:")) {
+      delayTime = text.substring(9).toInt();
+      Serial.printf("New interval: %lu ms\n", delayTime);
+    }
   }
 }
