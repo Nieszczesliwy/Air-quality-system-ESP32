@@ -6,18 +6,35 @@ body {
     color: #333;
 }
 
-h1 {
+header {
     text-align: center;
-    padding: 20px;
-    background-color: #4CAF50;
-    color: #fff;
+    padding: 1rem;
+    background-color: #333;
+    color: #d8de6b;
     font-size: 2em;
     margin-bottom: 0.5em;
 }
 
+p{
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 1em;
+    color: #d8de6b;
+}
+
 #sensorData {
     text-align: center;
-    padding: 10px;
+    padding: 1.4rem;
+    font-size: 1.5em;
+    color: #333;
+    background-color: #fff;
+    margin-bottom: 1em;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+}
+
+#sensorDataAvg{
+    text-align: center;
+    padding: 1.4rem;
     font-size: 1.5em;
     color: #333;
     background-color: #fff;
@@ -27,10 +44,40 @@ h1 {
 
 #myChart {
     display: block;
-    width: 90%;
-    height: 400px;
-    margin: 20px auto;
+    width: 70%;
+    height: 500px;
+    margin: 1.5rem auto;
     box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
     background-color: #fff;
     padding: 20px;
+}
+
+#sensorData, #sensorDataAvg {
+    text-align: center;
+    font-size: 1.2em;
+    padding: 10px;
+}
+
+#chartType{
+    font-size: 1em;
+    text-align: center;
+    margin: 1.5rem auto;
+}
+
+select {
+    text-align: center;
+    display: inline-block;
+    width: 8rem;
+    margin: 0 auto;
+    padding: 4px;
+    border: 2px solid #656262;
+    border-radius: 5px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
 }
